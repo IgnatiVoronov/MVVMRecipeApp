@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -60,17 +61,17 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
-    implementation ("androidx.appcompat:appcompat:1.6.1")
-    implementation ("com.google.android.material:material:1.10.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("androidx.ui:ui-tooling:1.0.0-alpha07")
-    implementation ("androidx.compose.ui:ui:1.5.4")
-    implementation ("androidx.compose.foundation:foundation:1.5.4")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
-    implementation ("androidx.compose.runtime:runtime-rxjava2:1.5.4")
-    implementation ("androidx.compose.material:material:1.5.4")
-    implementation ("androidx.compose.material:material-icons-core:1.5.4")
-    implementation ("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.ui:ui-tooling:1.0.0-alpha07")
+    implementation("androidx.compose.ui:ui:1.5.4")
+    implementation("androidx.compose.foundation:foundation:1.5.4")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.5.4")
+    implementation("androidx.compose.material:material:1.5.4")
+    implementation("androidx.compose.material:material-icons-core:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -86,4 +87,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    //Retrofit
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 }
