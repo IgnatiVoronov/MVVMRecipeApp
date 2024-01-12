@@ -3,10 +3,7 @@ package com.example.mvvmrecipeapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.mvvmrecipeapp.domain.model.Recipe
 import com.example.mvvmrecipeapp.network.RecipeService
-import com.example.mvvmrecipeapp.network.model.RecipeNetworkEntity
-import com.example.mvvmrecipeapp.network.model.RecipeNetworkMapper
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO

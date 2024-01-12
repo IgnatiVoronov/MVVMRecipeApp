@@ -1,6 +1,6 @@
 package com.example.mvvmrecipeapp.network
 
-import com.example.mvvmrecipeapp.network.model.RecipeNetworkEntity
+import com.example.mvvmrecipeapp.network.model.RecipeDto
 import com.example.mvvmrecipeapp.network.responses.RecipeSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -19,5 +19,5 @@ interface RecipeService {
     suspend fun get(
         @Header("Authorization") token: String,
         @Query("id") id: Int
-    ): RecipeNetworkEntity
+    ): RecipeDto
 }
