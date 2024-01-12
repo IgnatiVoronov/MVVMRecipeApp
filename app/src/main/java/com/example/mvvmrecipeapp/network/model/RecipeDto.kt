@@ -2,7 +2,7 @@ package com.example.mvvmrecipeapp.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RecipeDto (
+data class RecipeDto(
     @SerializedName("pk")
     val pk: Int? = null,
 
