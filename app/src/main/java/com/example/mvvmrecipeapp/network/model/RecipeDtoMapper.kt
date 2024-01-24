@@ -4,21 +4,21 @@ import com.example.mvvmrecipeapp.domain.model.Recipe
 import com.example.mvvmrecipeapp.domain.util.DomainMapper
 
 class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
-    override fun mapToDomainModel(entity: RecipeDto): Recipe {
+    override fun mapToDomainModel(model: RecipeDto): Recipe {
         return Recipe(
-            id = entity.pk,
-            title = entity.title,
-            featuredImage = entity.featuredImage,
-            rating = entity.rating,
-            publisher = entity.publisher,
-            sourceUrl = entity.sourceUrl,
-            description = entity.description,
-            cookingInstructions = entity.cookingInstructions,
-            ingredients = entity.ingredients ?: listOf(),
-            dateAdded = entity.dateAdded,
-            dateUpdated = entity.dateUpdated,
-            longDateAdded = entity.longDateAdded,
-            longDateUpdated = entity.longDateUpdated
+            id = model.pk,
+            title = model.title,
+            featuredImage = model.featuredImage,
+            rating = model.rating,
+            publisher = model.publisher,
+            sourceUrl = model.sourceUrl,
+            description = model.description,
+            cookingInstructions = model.cookingInstructions,
+            ingredients = model.ingredients ?: listOf(),
+            dateAdded = model.dateAdded,
+            dateUpdated = model.dateUpdated,
+            longDateAdded = model.longDateAdded,
+            longDateUpdated = model.longDateUpdated
         )
     }
 
