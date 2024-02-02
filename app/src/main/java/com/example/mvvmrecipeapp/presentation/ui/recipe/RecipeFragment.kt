@@ -18,15 +18,7 @@ import com.example.mvvmrecipeapp.presentation.ui.recipe_list.RecipeListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecipeFragment : Fragment(){
-
-    val viewModel: RecipeListViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        println("RecipeFragment: $viewModel")
-    }
-
+class RecipeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +26,7 @@ class RecipeFragment : Fragment(){
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                Column(modifier = Modifier.padding(16.dp)){
+                Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "Recipe fragment",
                         style = TextStyle(fontSize = 21.sp)

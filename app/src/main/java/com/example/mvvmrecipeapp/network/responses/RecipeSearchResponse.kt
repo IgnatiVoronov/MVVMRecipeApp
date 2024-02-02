@@ -7,6 +7,6 @@ data class RecipeSearchResponse(
     @SerializedName("count")
     var count: Int,
 
-    @SerializedName("result")
+    @SerializedName("results")
     var recipes: List<RecipeDto>
 )

@@ -18,15 +18,15 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeMapper(): RecipeDtoMapper{
+    fun provideRecipeMapper(): RecipeDtoMapper {
         return RecipeDtoMapper()
     }
 
     @Singleton
     @Provides
-    fun provideRecipeService(): RecipeService{
+    fun provideRecipeService(): RecipeService {
         return Retrofit.Builder()
-            .baseUrl("http://food2fork.ca/api/recipe/")
+            .baseUrl("https://food2fork.ca/api/recipe/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
             .create(RecipeService::class.java)
@@ -35,7 +35,7 @@ object NetworkModule {
     @Singleton
     @Provides
     @Named("auth_token")
-    fun provideAuthToken(): String{
+    fun provideAuthToken(): String {
         return "Token 9c8b06d329136da358c2d00e76946b0111ce2c48"
     }
 }
