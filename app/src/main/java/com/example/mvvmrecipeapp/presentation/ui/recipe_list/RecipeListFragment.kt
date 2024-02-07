@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
 import com.example.mvvmrecipeapp.network.model.RecipeDtoMapper
+import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.util.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -42,22 +45,11 @@ class RecipeListFragment : Fragment() {
 
                 val recipes = viewModel.recipes.value
 
-                for (recipe in recipes) {
-                    Log.d(TAG, "onCreateView: ${recipe.title}")
-                }
-
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Recipe List",
-                        style = TextStyle(fontSize = 21.sp)
-                    )
-                    Spacer(modifier = Modifier.padding(10.dp))
-                    Button(
-                        onClick = {
-                            findNavController().navigate(R.id.viewRecipe)
-                        }
-                    ) {
-                        Text(text = "To recipe fragment")
+                LazyColumn {
+                    itemsIndexed(
+                        items = recipes
+                    ){ index, recipe ->
+                        RecipeCard(recipe = recipe, onClick = {})
                     }
                 }
             }
