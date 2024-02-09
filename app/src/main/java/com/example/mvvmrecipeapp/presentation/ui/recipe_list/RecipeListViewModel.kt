@@ -22,10 +22,10 @@ class RecipeListViewModel @Inject constructor(
 
     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
 
-    val query = mutableStateOf("Chicken")
+    val query = mutableStateOf("")
 
     init {
-        newSearch("Chicken")
+        newSearch(query.value)
     }
 
     fun newSearch(query: String) {
