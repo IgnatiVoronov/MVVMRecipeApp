@@ -3,7 +3,6 @@ package com.example.mvvmrecipeapp.presentation.components
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -15,7 +14,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
@@ -24,13 +23,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mvvmrecipeapp.R
@@ -38,7 +34,7 @@ import com.example.mvvmrecipeapp.R
 
 @Composable
 fun ExpandDemo() {
-    val color = MaterialTheme.colors.primary
+    val color = MaterialTheme.colorScheme.primary
     var expanded by remember { mutableStateOf(false) }
 
     Box(
@@ -83,7 +79,7 @@ fun HeartPulseAnimation() {
 
 @Composable
 fun CircleHeartPulseAnimation() {
-    val color = MaterialTheme.colors.primary
+    val color = MaterialTheme.colorScheme.primary
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val beatAnimation by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -105,11 +101,11 @@ fun CircleHeartPulseAnimation() {
     )
 
     Canvas(
-       modifier = Modifier
-           .fillMaxWidth()
-           .height(55.dp)
-           .scale(beatAnimation)
-    ){
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(55.dp)
+            .scale(beatAnimation)
+    ) {
         drawCircle(
             brush = SolidColor(color),
         )
