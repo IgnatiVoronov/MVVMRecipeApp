@@ -1,6 +1,7 @@
 package com.example.mvvmrecipeapp.presentation.ui.recipe_list
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
+
+const val PAGE_SIZE = 30
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
@@ -28,10 +31,15 @@ class RecipeListViewModel @Inject constructor(
 
     val loading = mutableStateOf((false))
 
+    val page = mutableIntStateOf(1)
+
+    private var recipeListScrollPosition = 0
+
     init {
         newSearch()
     }
 
+    //use case #1
     fun newSearch() {
         viewModelScope.launch {
             loading.value = true
@@ -50,13 +58,59 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    private fun resetSearchState(){
+    //use case#2
+    fun nextPage() {
+        viewModelScope.launch {
+            //prevent duplicate events due to recompose happening to quickly
+            if ((recipeListScrollPosition + 1) >= (page.intValue * PAGE_SIZE)) {
+                loading.value = true
+                incrementPage()
+
+                //just to show pagination, api is fast
+                delay(1000)
+
+                if (page.intValue > 1) {
+                    val result = repository.search(
+                        token = token,
+                        page = page.intValue,
+                        query = query.value
+                    )
+                    appendRecipes(result)
+                }
+                loading.value = false
+            }
+        }
+    }
+
+    /**
+     * Append new recipes to the current list of recipes
+     */
+    private fun appendRecipes(recipes: List<Recipe>) {
+        val current = ArrayList(this.recipes.value)
+        current.addAll(recipes)
+        this.recipes.value = current
+    }
+
+    private fun incrementPage() {
+        page.intValue += 1
+    }
+
+    fun onChangeRecipeScrollPosition(position: Int) {
+        recipeListScrollPosition = position
+    }
+
+    /**
+     * Called when a new search is executed
+     */
+    private fun resetSearchState() {
         recipes.value = listOf()
-        if(selectedCategory.value?.value != query.value)
+        page.intValue = 1
+        onChangeRecipeScrollPosition(0)
+        if (selectedCategory.value?.value != query.value)
             clearSelectedCategory()
     }
 
-    private fun clearSelectedCategory(){
+    private fun clearSelectedCategory() {
         selectedCategory.value = null
     }
 
