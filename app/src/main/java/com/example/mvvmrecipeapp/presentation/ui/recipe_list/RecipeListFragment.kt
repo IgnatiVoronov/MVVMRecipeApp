@@ -33,6 +33,7 @@ import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.presentation.components.SearchAppBar
 import com.example.mvvmrecipeapp.presentation.components.ShimmerRecipeCardItem
 import com.example.mvvmrecipeapp.presentation.components.util.SnackbarController
+import com.example.mvvmrecipeapp.presentation.ui.recipe_list.RecipeListEvent.*
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -88,7 +89,7 @@ class RecipeListFragment : Fragment() {
                                                 )
                                         }
                                     } else {
-                                        viewModel.newSearch()
+                                        viewModel.onTriggerEvent(NewSearchEvent)
                                     }
                                 },
                                 categories = getAllFoodCategories(),
@@ -115,7 +116,7 @@ class RecipeListFragment : Fragment() {
                                     ) { index, recipe ->
                                         viewModel.onChangeRecipeScrollPosition(index)
                                         if ((index + 1) >= (page * PAGE_SIZE) && !loading) {
-                                            viewModel.nextPage()
+                                            viewModel.onTriggerEvent(NextPageEvent)
                                         }
                                         RecipeCard(recipe = recipe, onClick = {})
                                     }
