@@ -5,19 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -26,12 +21,10 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.presentation.BaseApplication
-import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
-import com.example.mvvmrecipeapp.presentation.components.DefaultSnackbar
-import com.example.mvvmrecipeapp.presentation.components.RecipeCard
+import com.example.mvvmrecipeapp.presentation.components.RecipeList
 import com.example.mvvmrecipeapp.presentation.components.SearchAppBar
-import com.example.mvvmrecipeapp.presentation.components.ShimmerRecipeCardItem
 import com.example.mvvmrecipeapp.presentation.components.util.SnackbarController
 import com.example.mvvmrecipeapp.presentation.ui.recipe_list.RecipeListEvent.*
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
@@ -101,34 +94,19 @@ class RecipeListFragment : Fragment() {
                             )
                         }
                     ) { innerPadding ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(color = MaterialTheme.colorScheme.background)
-                                .padding(innerPadding)
-                        ) {
-                            if (loading && recipes.isEmpty()) {
-                                ShimmerRecipeCardItem()
-                            } else {
-                                LazyColumn {
-                                    itemsIndexed(
-                                        items = recipes
-                                    ) { index, recipe ->
-                                        viewModel.onChangeRecipeScrollPosition(index)
-                                        if ((index + 1) >= (page * PAGE_SIZE) && !loading) {
-                                            viewModel.onTriggerEvent(NextPageEvent)
-                                        }
-                                        RecipeCard(recipe = recipe, onClick = {})
-                                    }
-                                }
-                            }
-                            CircularIndeterminateProgressBar(isDisplayed = loading)
-                            DefaultSnackbar(
-                                snackbarHostState = snackbarHostState,
-                                onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() },
-                                modifier = Modifier.align(Alignment.BottomCenter)
-                            )
-                        }
+                        RecipeList(
+                            innerPadding = innerPadding,
+                            loading = loading,
+                            recipes = recipes,
+                            onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+                            page = page,
+                            onNextPage = {
+                                viewModel.onTriggerEvent(NextPageEvent)
+                            },
+                            snackbarHostState = snackbarHostState,
+                            snackbarController = snackbarController,
+                            navController = findNavController()
+                        )
                     }
 
                 }
