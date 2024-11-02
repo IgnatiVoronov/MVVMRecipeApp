@@ -38,7 +38,7 @@ fun ShimmerRecipeCardItem() {
                     .background(color = Color.LightGray)
                     .height(300.dp)
                     .fillMaxWidth()
-                    .shimmerLoadingAnimation(), // <--- Here.
+                    .shimmerLoadingAnimation(),
             )
         }
     }

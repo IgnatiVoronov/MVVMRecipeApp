@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.mvvmrecipeapp.presentation.BaseApplication
 import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.mvvmrecipeapp.presentation.components.DefaultSnackbar
+import com.example.mvvmrecipeapp.presentation.components.LoadingRecipeShimmer
 import com.example.mvvmrecipeapp.presentation.components.RecipeView
 import com.example.mvvmrecipeapp.presentation.components.util.SnackbarController
 import com.example.mvvmrecipeapp.presentation.ui.recipe.RecipeEvent.GetRecipeEvent
@@ -72,7 +73,7 @@ class RecipeFragment : Fragment() {
                                 .padding(innerPadding)
                         ) {
                             if (loading && recipe == null) {
-                                Text("Loading...")
+                                LoadingRecipeShimmer()
                             } else {
                                 recipe?.let {
                                     if (it.id == 1) {//snackbar demonstration
