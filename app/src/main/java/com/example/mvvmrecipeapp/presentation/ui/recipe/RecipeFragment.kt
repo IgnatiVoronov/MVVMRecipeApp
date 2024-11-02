@@ -4,35 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.mvvmrecipeapp.presentation.BaseApplication
+import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
+import com.example.mvvmrecipeapp.presentation.components.DefaultSnackbar
+import com.example.mvvmrecipeapp.presentation.components.LoadingRecipeShimmer
+import com.example.mvvmrecipeapp.presentation.components.RecipeView
+import com.example.mvvmrecipeapp.presentation.components.util.SnackbarController
+import com.example.mvvmrecipeapp.presentation.ui.recipe.RecipeEvent.GetRecipeEvent
+import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
-    private var recipeId: MutableState<Int> = mutableIntStateOf(-1)
+    @Inject
+    lateinit var application: BaseApplication
+
+    private var snackbarController = SnackbarController(lifecycleScope)
+
+    private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CoroutineScope(Main).launch {
-            delay(1000)
-            arguments?.getInt("recipeId")?.let { rId ->
-                recipeId.value = rId
-            }
+        arguments?.getInt("recipeId")?.let { recipeId ->
+            viewModel.onTriggerEvent(GetRecipeEvent(recipeId))
         }
     }
 
@@ -43,15 +53,48 @@ class RecipeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = if (recipeId.value != -1) {
-                            "Selected recipeId: ${recipeId.value}"
-                        } else {
-                            "Loading..."
-                        },
-                        style = TextStyle(fontSize = 21.sp)
-                    )
+
+                val loading = viewModel.loading.value
+                val recipe = viewModel.recipe.value
+
+                val scaffoldState = rememberScaffoldState()
+
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                MVVMRecipeAppTheme(darkTheme = application.isDark.value) {
+                    Scaffold(
+                        snackbarHost = {
+                            scaffoldState.snackbarHostState
+                        }
+                    ) { innerPadding ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(innerPadding)
+                        ) {
+                            if (loading && recipe == null) {
+                                LoadingRecipeShimmer()
+                            } else {
+                                recipe?.let {
+                                    if (it.id == 1) {//snackbar demonstration
+                                        snackbarController.showSnackbar(
+                                            message = "An error occurred with this recipe",
+                                            actionLabel = "Ok",
+                                            snackbarHostState = snackbarHostState
+                                        )
+                                    } else {
+                                        RecipeView(recipe = it)
+                                    }
+                                }
+                            }
+                            CircularIndeterminateProgressBar(isDisplayed = loading)
+                            DefaultSnackbar(
+                                snackbarHostState = snackbarHostState,
+                                onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() },
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                            )
+                        }
+                    }
                 }
 
             }
