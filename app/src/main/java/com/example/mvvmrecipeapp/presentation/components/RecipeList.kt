@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.mvvmrecipeapp.R
@@ -72,11 +71,5 @@ fun RecipeList(
                 }
             }
         }
-        CircularIndeterminateProgressBar(isDisplayed = loading)
-        DefaultSnackbar(
-            snackbarHostState = snackbarHostState,
-            onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
