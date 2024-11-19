@@ -18,7 +18,7 @@ fun CircularIndeterminateProgressBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(50.dp),
+                .padding(150.dp),
             horizontalArrangement = Arrangement.Center
         ){
             CircularProgressIndicator(

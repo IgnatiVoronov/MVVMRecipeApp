@@ -7,20 +7,16 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.mvvmrecipeapp.presentation.BaseApplication
-import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
-import com.example.mvvmrecipeapp.presentation.components.DefaultSnackbar
 import com.example.mvvmrecipeapp.presentation.components.LoadingRecipeShimmer
 import com.example.mvvmrecipeapp.presentation.components.RecipeView
 import com.example.mvvmrecipeapp.presentation.components.util.SnackbarController
@@ -61,7 +57,11 @@ class RecipeFragment : Fragment() {
 
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                MVVMRecipeAppTheme(darkTheme = application.isDark.value) {
+                MVVMRecipeAppTheme(
+                    darkTheme = application.isDark.value,
+                    displayProgressBar = loading,
+                    snackbarHostState = snackbarHostState
+                ) {
                     Scaffold(
                         snackbarHost = {
                             scaffoldState.snackbarHostState
@@ -87,12 +87,6 @@ class RecipeFragment : Fragment() {
                                     }
                                 }
                             }
-                            CircularIndeterminateProgressBar(isDisplayed = loading)
-                            DefaultSnackbar(
-                                snackbarHostState = snackbarHostState,
-                                onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() },
-                                modifier = Modifier.align(Alignment.BottomCenter)
-                            )
                         }
                     }
                 }
